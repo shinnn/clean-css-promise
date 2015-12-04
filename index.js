@@ -12,6 +12,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var arrayToError = require('array-to-error');
 var CleanCss = require('clean-css');
+var PinkiePromise = require('pinkie-promise');
 
 module.exports = (function (_CleanCss) {
   _inherits(CleanCssPromise, _CleanCss);
@@ -26,7 +27,7 @@ module.exports = (function (_CleanCss) {
     key: 'minify',
     value: function minify(source) {
       var originalMinify = _get(Object.getPrototypeOf(CleanCssPromise.prototype), 'minify', this).bind(this);
-      return new Promise(function promisify(resolve, reject) {
+      return new PinkiePromise(function promisify(resolve, reject) {
         originalMinify(source, function minifyCallback(errors, result) {
           if (errors) {
             reject(arrayToError(errors));
