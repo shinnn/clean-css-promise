@@ -1,6 +1,6 @@
 {
   "name": "clean-css-promise",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Promises/A+ version of clean-css",
   "repository": "shinnn/clean-css-promise",
   "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
