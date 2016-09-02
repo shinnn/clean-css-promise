@@ -3,8 +3,8 @@
 [![NPM version](https://img.shields.io/npm/v/clean-css-promise.svg)](https://www.npmjs.com/package/clean-css-promise)
 [![Build Status](https://travis-ci.org/shinnn/clean-css-promise.svg?branch=master)](https://travis-ci.org/shinnn/clean-css-promise)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/clean-css-promise.svg)](https://coveralls.io/github/shinnn/clean-css-promise?branch=master)
-[![Dependency Status](https://david-dm.org/shinnn/clean-css-promise.svg)](https://david-dm.org/shinnn/clean-css-promise)
-[![Dependency Status](https://david-dm.org/shinnn/clean-css-promise.svg)](https://david-dm.org/shinnn/clean-css-promise)
+[![dependencies Status](https://david-dm.org/shinnn/clean-css-promise/status.svg)](https://david-dm.org/shinnn/clean-css-promise)
+[![devDependencies Status](https://david-dm.org/shinnn/clean-css-promise/dev-status.svg)](https://david-dm.org/shinnn/clean-css-promise?type=dev)
 
 [Promises/A+](https://promisesaplus.com/) version of [clean-css](https://github.com/jakubpawlowicz/clean-css)
 
@@ -55,6 +55,6 @@ new CleanCssPromise({})
 
 ## License
 
-Copyright (c) 2015 [Shinnosuke Watanabe](https://github.com/shinnn)
+Copyright (c) 2015 - 2016 [Shinnosuke Watanabe](https://github.com/shinnn)
 
 Licensed under [the MIT License](./LICENSE).
