@@ -37,9 +37,9 @@
     "clean-css": "^3.4.8"
   },
   "devDependencies": {
-    "@shinnn/eslint-config-node": "^2.0.0",
-    "eslint": "^2.9.0",
-    "istanbul": "^0.4.3",
-    "tape": "^4.5.1"
+    "@shinnn/eslint-config-node": "^3.0.0",
+    "eslint": "^3.4.0",
+    "istanbul": "^0.4.5",
+    "tape": "^4.6.0"
   }
 }
