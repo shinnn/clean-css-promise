@@ -32,7 +32,6 @@
     "thenable"
   ],
   "dependencies": {
-    "array-to-error": "^1.0.0",
     "clean-css": "^4.0.3"
   },
   "devDependencies": {

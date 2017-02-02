@@ -3,8 +3,6 @@
 [![NPM version](https://img.shields.io/npm/v/clean-css-promise.svg)](https://www.npmjs.com/package/clean-css-promise)
 [![Build Status](https://travis-ci.org/shinnn/clean-css-promise.svg?branch=master)](https://travis-ci.org/shinnn/clean-css-promise)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/clean-css-promise.svg)](https://coveralls.io/github/shinnn/clean-css-promise?branch=master)
-[![dependencies Status](https://david-dm.org/shinnn/clean-css-promise/status.svg)](https://david-dm.org/shinnn/clean-css-promise)
-[![devDependencies Status](https://david-dm.org/shinnn/clean-css-promise/dev-status.svg)](https://david-dm.org/shinnn/clean-css-promise?type=dev)
 
 [clean-css](https://github.com/jakubpawlowicz/clean-css) with the default [Promise](https://developer.mozilla.org/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise) interface and some improvements
 
@@ -13,7 +11,7 @@ const CleanCssPromise = require('clean-css-promise');
 
 new CleanCssPromise()
 .minify('p { margin: 1px 1px 1px 1px; }')
-.then(result => console.log(result.styles)) //=> 'p{margin:1px}'
+.then(({styles}) => console.log(styles)) //=> p{margin:1px}
 ```
 
 ## Installation
@@ -34,20 +32,24 @@ const CleanCssPromise = require('clean-css-promise');
 
 *options*: `Object` ([clean-css constructor options](https://github.com/jakubpawlowicz/clean-css#constructor-options))  
 
+Almost the same the original `clean-css`, except for:
 
-It has the same API as [clean-css's][clean-css-api], except for:
-
-* `.minify()` method is [promisified](https://promise-nuggets.github.io/articles/07-wrapping-callback-functions.html).
-* The error passed to [*onRejected*](https://promisesaplus.com/#point-30) function is modified with [array-to-error](https://github.com/shinnn/array-to-error).
+* [`returnPromise` option](https://github.com/jakubpawlowicz/clean-css#promise-interface) is enabled by default, and cannot be disabled.
+* [*onRejected*](https://promisesaplus.com/#point-30) function receives an error instead of an array.
+* All problems that clean-css considers as *warnings*, for example broken CSS syntax, are regarded as *errors*.
 
 ```javascript
 const CleanCssPromise = require('clean-css-promise');
 
 new CleanCssPromise({})
-.minify('@import /foo;@import /bar;')
+.minify('@import url(/foo);}')
 .catch(err => {
-  console.error(err.message);
-  //=> 'Broken @import declaration of "/foo"\nBroken @import declaration of "/bar"'
+  err.message;
+  /*=> `2 errors found while optimizing CSS with clean-css:
+  1. Ignoring local @import of "/foo" as resource is missing.
+  2. Invalid character(s) '?' at 1:18. Ignoring.
+
+clean-css dangerously ignores these errors but clean-css-promise doesn't, because it's much more reasonable to update the CSS to fix all problems than to pretend that you didn't see the errors.` */
 });
 ```
 
