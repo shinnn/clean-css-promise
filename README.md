@@ -6,7 +6,7 @@
 [![dependencies Status](https://david-dm.org/shinnn/clean-css-promise/status.svg)](https://david-dm.org/shinnn/clean-css-promise)
 [![devDependencies Status](https://david-dm.org/shinnn/clean-css-promise/dev-status.svg)](https://david-dm.org/shinnn/clean-css-promise?type=dev)
 
-[Promises/A+](https://promisesaplus.com/) version of [clean-css](https://github.com/jakubpawlowicz/clean-css)
+[clean-css](https://github.com/jakubpawlowicz/clean-css) with the default [Promise](https://developer.mozilla.org/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise) interface and some improvements
 
 ```javascript
 const CleanCssPromise = require('clean-css-promise');
@@ -30,12 +30,10 @@ npm install clean-css-promise
 const CleanCssPromise = require('clean-css-promise');
 ```
 
-### CleanCssPromise([*options*])
+### class CleanCssPromise([*options*])
 
-[clean-css-api]: https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-api
+*options*: `Object` ([clean-css constructor options](https://github.com/jakubpawlowicz/clean-css#constructor-options))  
 
-*options*: `Object` (clean-css [options][clean-css-api])  
-Return: `Object` (clean-css instance)
 
 It has the same API as [clean-css's][clean-css-api], except for:
 
@@ -55,6 +53,6 @@ new CleanCssPromise({})
 
 ## License
 
-Copyright (c) 2015 - 2016 [Shinnosuke Watanabe](https://github.com/shinnn)
+Copyright (c) 2015 - 2017 [Shinnosuke Watanabe](https://github.com/shinnn)
 
 Licensed under [the MIT License](./LICENSE).

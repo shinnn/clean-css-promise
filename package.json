@@ -1,7 +1,7 @@
 {
   "name": "clean-css-promise",
   "version": "1.0.1",
-  "description": "Promises/A+ version of clean-css",
+  "description": "clean-css with the default Promise interface and some improvements",
   "repository": "shinnn/clean-css-promise",
   "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
   "scripts": {
@@ -28,13 +28,12 @@
     "optimizer",
     "promise",
     "promises",
-    "promisified",
     "then",
     "thenable"
   ],
   "dependencies": {
     "array-to-error": "^1.0.0",
-    "clean-css": "^3.4.8"
+    "clean-css": "^4.0.3"
   },
   "devDependencies": {
     "@shinnn/eslint-config-node": "^3.0.0",
