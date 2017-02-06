@@ -5,6 +5,7 @@ const inspect = require('util').inspect;
 const CleanCss = require('clean-css');
 
 const CONSTRUCTOR_ERROR = 'Expected an object to specify clean-css options';
+const REBASE_TO_ERROR = 'Expected `rebaseTo` option to be a string or undefined';
 const createLine = (msg, error, index) => `${msg}\n  ${index + 1}. ${error}`;
 
 module.exports = class CleanCssPromise extends CleanCss {
@@ -31,6 +32,14 @@ module.exports = class CleanCssPromise extends CleanCss {
           inspect(options.returnPromise) +
           ' is provided.'
         );
+      }
+
+      if (options.rebaseTo !== undefined && typeof options.rebaseTo !== 'string') {
+        throw new TypeError(`${REBASE_TO_ERROR}, but got ${inspect(options.rebaseTo)}.${
+          options.rebaseTo === null || options.rebaseTo === false ?
+          ' If you want to disable `rebaseTo` option, do not pass any values to `rebaseTo`.' :
+          ''
+        }`);
       }
     } else {
       options = {};

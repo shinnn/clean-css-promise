@@ -40,6 +40,18 @@ test('CleanCssPromise class', t => {
     'should throw an error when `returnPromise` option receives any value.'
   );
 
+  t.throws(
+    () => new CleanCssPromise({rebaseTo: new Set()}),
+    /^TypeError.*Expected `rebaseTo` option to be a string or undefined, but got Set {}\./,
+    'should throw an error when `rebaseTo` option is not a string.'
+  );
+
+  t.throws(
+    () => new CleanCssPromise({rebaseTo: false}),
+    /^TypeError.*If you want to disable `rebaseTo` option, do not pass any values to `rebaseTo`\./,
+    'should throw an error when `rebaseTo` option is explicitly disabled.'
+  );
+
   t.end();
 });
 
