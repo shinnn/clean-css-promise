@@ -1,6 +1,6 @@
 {
   "name": "clean-css-promise",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "clean-css with the default Promise interface and some improvements",
   "repository": "shinnn/clean-css-promise",
   "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
@@ -32,11 +32,11 @@
     "thenable"
   ],
   "dependencies": {
-    "clean-css": "^4.0.3"
+    "clean-css": "^4.0.4"
   },
   "devDependencies": {
     "@shinnn/eslint-config-node": "^3.0.0",
-    "eslint": "^3.14.1",
+    "eslint": "^3.15.0",
     "istanbul": "^0.4.5",
     "tape": "^4.6.3"
   },
