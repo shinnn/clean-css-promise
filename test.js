@@ -55,34 +55,42 @@ test('CleanCssPromise class', t => {
 	t.end();
 });
 
-test('CleanCssPromise#minify()', t => {
-	t.plan(4);
+test('CleanCssPromise#minify()', async t => {
+	t.equal(
+		(await new CleanCssPromise().minify('a { color: #FF0000 }')).styles,
+		'a{color:red}',
+		'should minify CSS.'
+	);
 
-	new CleanCssPromise().minify('a { color: #FF0000 }').then(result => {
-		t.equal(result.styles, 'a{color:red}', 'should minify CSS.');
-	}).catch(t.fail);
-
-	new CleanCssPromise({
-		compatibility: {
-			properties: {
-				zeroUnits: false
+	t.equal(
+		(await new CleanCssPromise({
+			compatibility: {
+				properties: {
+					zeroUnits: false
+				}
 			}
-		}
-	}).minify('b {font: 0px}').then(result => {
-		t.equal(result.styles, 'b{font:0px}', 'should support clean-css options.');
-	}).catch(t.fail);
+		}).minify('b {font: 0px}')).styles,
+		'b{font:0px}',
+		'should support clean-css options.'
+	);
 
-	new CleanCssPromise(null).minify('@import /foo;').then(t.fail, ({message}) => {
+	try {
+		await new CleanCssPromise(null).minify('@import /foo;');
+	} catch ({message}) {
 		t.ok(
 			message.startsWith('An error found while optimizing CSS with clean-css'),
 			'should fail when an error occurs while optimizing CSS.'
 		);
-	});
+	}
 
-	new CleanCssPromise().minify('@import url(https://exmaple.com);a}').then(t.fail, ({message}) => {
+	try {
+		await new CleanCssPromise().minify('@import url(https://exmaple.com);a}');
+	} catch ({message}) {
 		t.ok(
 			message.startsWith(expectedMsg),
 			'should fail when multiple errors occur while optimizing CSS.'
 		);
-	});
+	}
+
+	t.end();
 });
