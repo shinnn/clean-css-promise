@@ -18,37 +18,37 @@ test('CleanCssPromise class', t => {
 
 	t.throws(
 		() => new CleanCssPromise(1),
-		/^TypeError.*Expected an object to specify clean-css options, but got a non-object value 1 instead\./,
+		/^TypeError.*Expected an object to specify clean-css options, but got a non-object value 1 instead\./u,
 		'should throw an error when it takes a non-object argument.'
 	);
 
 	t.throws(
 		() => new CleanCssPromise([]),
-		/^TypeError.*Expected an object to specify clean-css options, but got an array \[] instead\./,
+		/^TypeError.*Expected an object to specify clean-css options, but got an array \[\] instead\./u,
 		'should throw an error when it takes an array.'
 	);
 
 	t.throws(
 		() => new CleanCssPromise({returnPromise: false}),
-		/^Error.*clean-css-promise requires `returnPromise` option to be enabled\./,
+		/^Error.*clean-css-promise requires `returnPromise` option to be enabled\./u,
 		'should throw an error when `returnPromise` option is disabled.'
 	);
 
 	t.throws(
 		() => new CleanCssPromise({returnPromise: true}),
-		/^Error.*so you dont't need to pass any values to that option\. But true is provided\./,
+		/^Error.*so you dont't need to pass any values to that option\. But true is provided\./u,
 		'should throw an error when `returnPromise` option receives any value.'
 	);
 
 	t.throws(
 		() => new CleanCssPromise({rebaseTo: new Set()}),
-		/^TypeError.*Expected `rebaseTo` option to be a string or undefined, but got Set {}\./,
+		/^TypeError.*Expected `rebaseTo` option to be a string or undefined, but got Set \{\}\./u,
 		'should throw an error when `rebaseTo` option is not a string.'
 	);
 
 	t.throws(
 		() => new CleanCssPromise({rebaseTo: false}),
-		/^TypeError.*If you want to disable `rebaseTo` option, do not pass any values to `rebaseTo`\./,
+		/^TypeError.*If you want to disable `rebaseTo` option, do not pass any values to `rebaseTo`\./u,
 		'should throw an error when `rebaseTo` option is explicitly disabled.'
 	);
 
