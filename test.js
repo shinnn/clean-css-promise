@@ -4,11 +4,6 @@ const CleanCss = require('clean-css');
 const CleanCssPromise = require('.');
 const test = require('tape');
 
-const expectedMsg = `3 errors found while optimizing CSS with clean-css:
-  1. Unexpected '}' at 1:34.
-  2. Invalid character(s) 'a}' at 1:33. Ignoring.
-  3. Skipping remote @import of "https://exmaple.com" as resource is not allowed.`;
-
 test('CleanCssPromise class', t => {
 	t.deepEqual(
 		new CleanCssPromise().options,
@@ -18,13 +13,13 @@ test('CleanCssPromise class', t => {
 
 	t.throws(
 		() => new CleanCssPromise(1),
-		/^TypeError.*Expected an object to specify clean-css options, but got a non-object value 1 instead\./u,
-		'should throw an error when it takes a non-object argument.'
+		/^TypeError.*Expected an <Object> to specify clean-css options.*but got a non-Object value 1/u,
+		'should throw an error when it takes a non-Object argument.'
 	);
 
 	t.throws(
 		() => new CleanCssPromise([]),
-		/^TypeError.*Expected an object to specify clean-css options, but got an array \[\] instead\./u,
+		/^TypeError.*https:\/\/github.com\/jakubpawlowicz\/clean-css, but got an array \[\] instead\./u,
 		'should throw an error when it takes an array.'
 	);
 
@@ -52,6 +47,12 @@ test('CleanCssPromise class', t => {
 		'should throw an error when `rebaseTo` option is explicitly disabled.'
 	);
 
+	t.throws(
+		() => new CleanCssPromise({}, {}),
+		/^RangeError.*Expected 0 or 1 argument \(<Object>\), but got 2 arguments\./u,
+		'should throw an error when it takes too many arguments.'
+	);
+
 	t.end();
 });
 
@@ -75,20 +76,63 @@ test('CleanCssPromise#minify()', async t => {
 	);
 
 	try {
-		await new CleanCssPromise(null).minify('@import /foo;');
+		await new CleanCssPromise().minify('@import /foo;');
 	} catch ({message}) {
 		t.ok(
-			message.startsWith('An error found while optimizing CSS with clean-css'),
+			message.startsWith('An error occured while optimizing CSS with clean-css:'),
 			'should fail when an error occurs while optimizing CSS.'
 		);
 	}
 
 	try {
-		await new CleanCssPromise().minify('@import url(https://exmaple.com);a}');
+		await new CleanCssPromise().minify('@import url(https://exmaple.com);a}', '');
 	} catch ({message}) {
 		t.ok(
-			message.startsWith(expectedMsg),
+			message.startsWith(`3 errors occured while optimizing CSS with clean-css:
+  1. Unexpected '}' at 1:34.
+  2. Invalid character(s) 'a}' at 1:33. Ignoring.
+  3. Skipping remote @import of "https://exmaple.com" as resource is not allowed.`),
 			'should fail when multiple errors occur while optimizing CSS.'
+		);
+	}
+
+	try {
+		await new CleanCssPromise().minify(new Set(), '');
+	} catch ({message}) {
+		t.equal(
+			message,
+			'Expected CleanCssPromise#minify() to receive <string> as its first argument when it takes 2 arguments, but got Set {}.',
+			'should fail when it takes 2 arguments but the first one is not a string.'
+		);
+	}
+
+	try {
+		await new CleanCssPromise().minify('', -0);
+	} catch ({message}) {
+		t.equal(
+			message,
+			'Expected CleanCssPromise#minify() to receive <string> as its second argument when it takes 2 arguments, but got -0 (number).',
+			'should fail when the second argument is not a string.'
+		);
+	}
+
+	try {
+		await new CleanCssPromise().minify();
+	} catch ({message}) {
+		t.equal(
+			message,
+			'Expected 1 or 2 arguments (<string|Object>[, <string>]), but got no arguments.',
+			'should fail when it takes too no arguments.'
+		);
+	}
+
+	try {
+		await new CleanCssPromise().minify('', '', '');
+	} catch ({message}) {
+		t.equal(
+			message,
+			'Expected 1 or 2 arguments (<string|Object>[, <string>]), but got 3 arguments.',
+			'should fail when it takes too many arguments.'
 		);
 	}
 

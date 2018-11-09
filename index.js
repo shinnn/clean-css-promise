@@ -1,19 +1,31 @@
 'use strict';
 
-const inspect = require('util').inspect;
+const {inspect} = require('util');
 
 const CleanCss = require('clean-css');
+const inspectWithKind = require('inspect-with-kind');
 
-const CONSTRUCTOR_ERROR = 'Expected an object to specify clean-css options';
+const CONSTRUCTOR_ERROR = 'Expected an <Object> to specify clean-css options https://github.com/jakubpawlowicz/clean-css';
 const REBASE_TO_ERROR = 'Expected `rebaseTo` option to be a string or undefined';
 const createLine = (msg, error, index) => `${msg}\n  ${index + 1}. ${error}`;
 
 module.exports = class CleanCssPromise extends CleanCss {
-	constructor(options) {
-		if (options !== undefined && options !== null) {
-			if (typeof options !== 'object') {
-				throw new TypeError(`${CONSTRUCTOR_ERROR}, but got a non-object value ${
-					inspect(options)
+	constructor(...args) {
+		const argLen = args.length;
+
+		if (argLen > 1) {
+			const error = new RangeError(`Expected 0 or 1 argument (<Object>), but got ${argLen} arguments.`);
+			error.code = 'ERR_TOO_MANY_ARGS';
+
+			throw error;
+		}
+
+		const [options = {}] = args;
+
+		if (argLen === 1) {
+			if (options === null || typeof options !== 'object') {
+				throw new TypeError(`${CONSTRUCTOR_ERROR}, but got a non-Object value ${
+					inspectWithKind(options)
 				} instead.`);
 			}
 
@@ -39,24 +51,60 @@ module.exports = class CleanCssPromise extends CleanCss {
 						''
 				}`);
 			}
-		} else {
-			options = {};
 		}
 
 		super(options);
 	}
 
-	minify(source) {
+	minify(...args) {
+		const argLen = args.length;
+
+		if (argLen === 0) {
+			const error = new RangeError('Expected 1 or 2 arguments (<string|Object>[, <string>]), but got no arguments.');
+			error.code = 'ERR_MISSING_ARGS';
+
+			return Promise.reject(error);
+		}
+
+		if (argLen > 2) {
+			const error = new RangeError(`Expected 1 or 2 arguments (<string|Object>[, <string>]), but got ${argLen} arguments.`);
+			error.code = 'ERR_TOO_MANY_ARGS';
+
+			return Promise.reject(error);
+		}
+
+		const [input, sourceMap] = args;
+
+		if (argLen === 2) {
+			if (typeof input !== 'string') {
+				const error = new TypeError(`Expected CleanCssPromise#minify() to receive <string> as its first argument when it takes 2 arguments, but got ${
+					inspectWithKind(input)
+				}.`);
+				error.code = 'ERR_INVALID_ARG_TYPE';
+
+				return Promise.reject(error);
+			}
+
+			if (typeof sourceMap !== 'string') {
+				const error = new TypeError(`Expected CleanCssPromise#minify() to receive <string> as its second argument when it takes 2 arguments, but got ${
+					inspectWithKind(sourceMap)
+				}.`);
+				error.code = 'ERR_INVALID_ARG_TYPE';
+
+				return Promise.reject(error);
+			}
+		}
+
 		return new Promise((resolve, reject) => {
-			super.minify(source, (unusedArg, result) => {
-				const errors = result.errors.concat(result.warnings);
+			super.minify(...args, (unusedArg, result) => {
+				const errors = [...result.errors, ...result.warnings];
 				const errorCount = errors.length;
 
 				if (errorCount !== 0) {
 					const errorMessage = errorCount !== 1 ? errors.reduce(
 						createLine,
-						`${errors.length} errors found while optimizing CSS with clean-css:`
-					) : `An error found while optimizing CSS with clean-css:\n  * ${errors[0]}`;
+						`${errors.length} errors occured while optimizing CSS with clean-css:`
+					) : `An error occured while optimizing CSS with clean-css: ${errors[0]}`;
 
 					reject(new Error(`${errorMessage
 					}\n\nclean-css dangerously ignores ${

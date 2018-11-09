@@ -16,7 +16,7 @@ new CleanCssPromise()
 
 ## Installation
 
-[Use npm.](https://docs.npmjs.com/cli/install)
+[Use](https://docs.npmjs.com/cli/install) [npm](https://docs.npmjs.com/getting-started/what-is-npm).
 
 ```
 npm install clean-css-promise
@@ -35,7 +35,7 @@ const CleanCssPromise = require('clean-css-promise');
 Almost the same the original `clean-css`, except for:
 
 * [`returnPromise` option](https://github.com/jakubpawlowicz/clean-css#promise-interface) is enabled by default, and cannot be disabled.
-* [*onRejected*](https://promisesaplus.com/#point-30) function receives an error instead of an array.
+* [*onRejected*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then#Parameters) function receives an `Error` instead of an `Array`.
 * All problems that clean-css considers as *warnings*, for example broken CSS syntax, are regarded as *errors*.
 
 ```javascript
@@ -55,4 +55,4 @@ clean-css dangerously ignores these errors but clean-css-promise doesn't, becaus
 
 ## License
 
-[ISC License](./LICENSE) © 2017 Shinnosuke Watanabe
+[ISC License](./LICENSE) © 2017 - 2018 Shinnosuke Watanabe
