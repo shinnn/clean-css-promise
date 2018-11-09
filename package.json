@@ -32,7 +32,8 @@
 	],
 	"dependencies": {
 		"clean-css": "^4.2.1",
-		"inspect-with-kind": "^1.0.5"
+		"inspect-with-kind": "^1.0.5",
+		"is-plain-obj": "^1.1.0"
 	},
 	"devDependencies": {
 		"@shinnn/eslint-config": "^6.8.0",

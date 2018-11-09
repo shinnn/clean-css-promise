@@ -4,6 +4,7 @@ const {inspect} = require('util');
 
 const CleanCss = require('clean-css');
 const inspectWithKind = require('inspect-with-kind');
+const isPlainObj = require('is-plain-obj');
 
 const CONSTRUCTOR_ERROR = 'Expected an <Object> to specify clean-css options https://github.com/jakubpawlowicz/clean-css';
 const REBASE_TO_ERROR = 'Expected `rebaseTo` option to be a string or undefined';
@@ -20,28 +21,22 @@ module.exports = class CleanCssPromise extends CleanCss {
 			throw error;
 		}
 
-		const [options = {}] = args;
-
 		if (argLen === 1) {
-			if (options === null || typeof options !== 'object') {
-				throw new TypeError(`${CONSTRUCTOR_ERROR}, but got a non-Object value ${
+			const [options] = args;
+
+			if (!isPlainObj(options)) {
+				const error = new TypeError(`${CONSTRUCTOR_ERROR}, but got ${
 					inspectWithKind(options)
-				} instead.`);
-			}
+				}.`);
+				error.code = 'ERR_INVALID_ARG_TYPE';
 
-			if (Array.isArray(options)) {
-				throw new TypeError(`${CONSTRUCTOR_ERROR}, but got an array ${inspect(options)} instead.`);
-			}
-
-			if (options.returnPromise === false) {
-				throw new Error('clean-css-promise requires `returnPromise` option to be enabled.');
+				throw error;
 			}
 
 			if (options.returnPromise !== undefined) {
-				throw new Error(`${'clean-css-promise enables `returnPromise` option by default, so you dont\'t need to ' +
-          'pass any values to that option. But '}${
+				throw new Error(`clean-css-promise automatically enables \`returnPromise\` option and it's unconfigurable, but a value ${
 					inspect(options.returnPromise)
-				} is provided.`);
+				} was provided for it.`);
 			}
 
 			if (options.rebaseTo !== undefined && typeof options.rebaseTo !== 'string') {
@@ -53,7 +48,7 @@ module.exports = class CleanCssPromise extends CleanCss {
 			}
 		}
 
-		super(options);
+		super(...args);
 	}
 
 	async minify(...args) {
@@ -62,13 +57,6 @@ module.exports = class CleanCssPromise extends CleanCss {
 		if (argLen === 0) {
 			const error = new RangeError('Expected 1 or 2 arguments (<string|Object>[, <string>]), but got no arguments.');
 			error.code = 'ERR_MISSING_ARGS';
-
-			throw error;
-		}
-
-		if (argLen > 2) {
-			const error = new RangeError(`Expected 1 or 2 arguments (<string|Object>[, <string>]), but got ${argLen} arguments.`);
-			error.code = 'ERR_TOO_MANY_ARGS';
 
 			throw error;
 		}
@@ -93,6 +81,20 @@ module.exports = class CleanCssPromise extends CleanCss {
 
 				throw error;
 			}
+		} else if (argLen === 1) {
+			if (typeof input !== 'string' && !isPlainObj(input)) {
+				const error = new TypeError(`Expected CleanCssPromise#minify() to receive <string> or <Object> as its first argument, but got ${
+					inspectWithKind(input)
+				}.`);
+				error.code = 'ERR_INVALID_ARG_TYPE';
+
+				throw error;
+			}
+		} else {
+			const error = new RangeError(`Expected 1 or 2 arguments (<string|Object>[, <string>]), but got ${argLen} arguments.`);
+			error.code = 'ERR_TOO_MANY_ARGS';
+
+			throw error;
 		}
 
 		return new Promise((resolve, reject) => {

@@ -12,26 +12,14 @@ test('CleanCssPromise class', t => {
 	);
 
 	t.throws(
-		() => new CleanCssPromise(1),
-		/^TypeError.*Expected an <Object> to specify clean-css options.*but got a non-Object value 1/u,
-		'should throw an error when it takes a non-Object argument.'
-	);
-
-	t.throws(
-		() => new CleanCssPromise([]),
-		/^TypeError.*https:\/\/github.com\/jakubpawlowicz\/clean-css, but got an array \[\] instead\./u,
+		() => new CleanCssPromise(Symbol('!')),
+		/^TypeError.*Expected an <Object> to specify clean-css options.*but got Symbol\(!\)\./u,
 		'should throw an error when it takes an array.'
 	);
 
 	t.throws(
-		() => new CleanCssPromise({returnPromise: false}),
-		/^Error.*clean-css-promise requires `returnPromise` option to be enabled\./u,
-		'should throw an error when `returnPromise` option is disabled.'
-	);
-
-	t.throws(
 		() => new CleanCssPromise({returnPromise: true}),
-		/^Error.*so you dont't need to pass any values to that option\. But true is provided\./u,
+		/^Error.*clean-css-promise automatically enables `returnPromise` option and it's unconfigurable/u,
 		'should throw an error when `returnPromise` option receives any value.'
 	);
 
@@ -97,11 +85,21 @@ test('CleanCssPromise#minify()', async t => {
 	}
 
 	try {
-		await new CleanCssPromise().minify(new Set(), '');
+		await new CleanCssPromise().minify([]);
 	} catch ({message}) {
 		t.equal(
 			message,
-			'Expected CleanCssPromise#minify() to receive <string> as its first argument when it takes 2 arguments, but got Set {}.',
+			'Expected CleanCssPromise#minify() to receive <string> or <Object> as its first argument, but got [] (array).',
+			'should fail when the first argument is neither a string nor a plain object.'
+		);
+	}
+
+	try {
+		await new CleanCssPromise().minify({}, '');
+	} catch ({message}) {
+		t.equal(
+			message,
+			'Expected CleanCssPromise#minify() to receive <string> as its first argument when it takes 2 arguments, but got {} (object).',
 			'should fail when it takes 2 arguments but the first one is not a string.'
 		);
 	}
