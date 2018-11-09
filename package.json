@@ -1,6 +1,6 @@
 {
 	"name": "clean-css-promise",
-	"version": "3.0.0-0",
+	"version": "3.0.0-1",
 	"description": "clean-css with the default Promise interface and some improvements",
 	"repository": "shinnn/clean-css-promise",
 	"author": "Shinnosuke Watanabe (https://github.com/shinnn)",
