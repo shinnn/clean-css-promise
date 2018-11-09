@@ -56,21 +56,21 @@ module.exports = class CleanCssPromise extends CleanCss {
 		super(options);
 	}
 
-	minify(...args) {
+	async minify(...args) {
 		const argLen = args.length;
 
 		if (argLen === 0) {
 			const error = new RangeError('Expected 1 or 2 arguments (<string|Object>[, <string>]), but got no arguments.');
 			error.code = 'ERR_MISSING_ARGS';
 
-			return Promise.reject(error);
+			throw error;
 		}
 
 		if (argLen > 2) {
 			const error = new RangeError(`Expected 1 or 2 arguments (<string|Object>[, <string>]), but got ${argLen} arguments.`);
 			error.code = 'ERR_TOO_MANY_ARGS';
 
-			return Promise.reject(error);
+			throw error;
 		}
 
 		const [input, sourceMap] = args;
@@ -82,7 +82,7 @@ module.exports = class CleanCssPromise extends CleanCss {
 				}.`);
 				error.code = 'ERR_INVALID_ARG_TYPE';
 
-				return Promise.reject(error);
+				throw error;
 			}
 
 			if (typeof sourceMap !== 'string') {
@@ -91,7 +91,7 @@ module.exports = class CleanCssPromise extends CleanCss {
 				}.`);
 				error.code = 'ERR_INVALID_ARG_TYPE';
 
-				return Promise.reject(error);
+				throw error;
 			}
 		}
 
