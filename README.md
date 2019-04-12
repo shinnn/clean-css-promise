@@ -2,16 +2,17 @@
 
 [![npm version](https://img.shields.io/npm/v/clean-css-promise.svg)](https://www.npmjs.com/package/clean-css-promise)
 [![Build Status](https://travis-ci.com/shinnn/clean-css-promise.svg?branch=master)](https://travis-ci.com/shinnn/clean-css-promise)
-[![Coverage Status](https://img.shields.io/coveralls/shinnn/clean-css-promise.svg)](https://coveralls.io/github/shinnn/clean-css-promise?branch=master)
+[![codecov](https://codecov.io/gh/shinnn/clean-css-promise/branch/master/graph/badge.svg)](https://codecov.io/gh/shinnn/clean-css-promise)
 
 [clean-css](https://github.com/jakubpawlowicz/clean-css) with the default [Promise](https://developer.mozilla.org/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise) interface and some improvements
 
 ```javascript
 const CleanCssPromise = require('clean-css-promise');
 
-new CleanCssPromise()
-.minify('p { margin: 1px 1px 1px 1px; }')
-.then(({styles}) => console.log(styles)) //=> p{margin:1px}
+(async () => {
+  const {styles} = new CleanCssPromise().minify('p { margin: 1px 1px 1px 1px; }');
+  //=> p{margin:1px}
+})();
 ```
 
 ## Installation
@@ -55,4 +56,4 @@ clean-css dangerously ignores these errors but clean-css-promise doesn't, becaus
 
 ## License
 
-[ISC License](./LICENSE) © 2017 - 2018 Shinnosuke Watanabe
+[ISC License](./LICENSE) © 2017 - 2019 Shinnosuke Watanabe
