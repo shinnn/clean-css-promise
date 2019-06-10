@@ -1,7 +1,7 @@
 # clean-css-promise
 
 [![npm version](https://img.shields.io/npm/v/clean-css-promise.svg)](https://www.npmjs.com/package/clean-css-promise)
-[![Build Status](https://travis-ci.com/shinnn/clean-css-promise.svg?branch=master)](https://travis-ci.com/shinnn/clean-css-promise)
+[![Github Actions](https://action-badges.now.sh/shinnn/clean-css-promise)](https://wdp9fww0r9.execute-api.us-west-2.amazonaws.com/production/results/shinnn/clean-css-promise)
 [![codecov](https://codecov.io/gh/shinnn/clean-css-promise/branch/master/graph/badge.svg)](https://codecov.io/gh/shinnn/clean-css-promise)
 
 [clean-css](https://github.com/jakubpawlowicz/clean-css) with the default [Promise](https://developer.mozilla.org/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise) interface and some improvements
@@ -10,8 +10,15 @@
 const CleanCssPromise = require('clean-css-promise');
 
 (async () => {
-  const {styles} = new CleanCssPromise().minify('p { margin: 1px 1px 1px 1px; }');
-  //=> p{margin:1px}
+  const {styles} = await new CleanCssPromise().minify(`
+p {
+  color: #ff0000;
+}
+
+b {
+  /* nothing */
+}
+`); //=> 'p{color:red}'
 })();
 ```
 
@@ -56,4 +63,4 @@ clean-css dangerously ignores these errors but clean-css-promise doesn't, becaus
 
 ## License
 
-[ISC License](./LICENSE) © 2017 - 2019 Shinnosuke Watanabe
+[ISC License](./LICENSE) © 2017 - 2019 Watanabe Shinnosuke
