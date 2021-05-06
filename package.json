@@ -31,7 +31,7 @@
 		"thenable"
 	],
 	"dependencies": {
-		"clean-css": "^4.2.1",
+		"clean-css": "^5.1.2",
 		"inspect-with-kind": "^1.0.5",
 		"is-plain-obj": "^2.0.0"
 	},
